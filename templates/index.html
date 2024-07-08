@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Box</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f7f7f7;
+            margin: 0;
+        }
+        #chat-container {
+            width: 400px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        #chat-box {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            border-bottom: 1px solid #ddd;
+        }
+        .message {
+            margin-bottom: 20px;
+        }
+        .message.user {
+            text-align: right;
+        }
+        .message p {
+            display: inline-block;
+            padding: 10px 15px;
+            border-radius: 20px;
+            max-width: 80%;
+        }
+        .message.user p {
+            background-color: #0084ff;
+            color: #fff;
+        }
+        .message.bot p {
+            background-color: #e4e6eb;
+            color: #000;
+        }
+        #input-container {
+            display: flex;
+            padding: 10px;
+        }
+        #input-container input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+        }
+        #input-container button {
+            padding: 10px 15px;
+            border: none;
+            background-color: #0084ff;
+            color: #fff;
+            border-radius: 20px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        #input-container button:disabled {
+            background-color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div id="chat-container">
+        <div id="chat-box"></div>
+        <div id="input-container">
+            <input type="text" id="user-input" placeholder="Type a message..." />
+            <button id="send-button" onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        function sendMessage() {
+            const userInput = document.getElementById('user-input');
+            const message = userInput.value.trim();
+            if (!message) return;
+
+            appendMessage('user', message);
+            userInput.value = '';
+            document.getElementById('send-button').disabled = true;
+
+            fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                appendMessage('bot', data.response);
+                document.getElementById('send-button').disabled = false;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('send-button').disabled = false;
+            });
+        }
+
+        function appendMessage(sender, message) {
+            const chatBox = document.getElementById('chat-box');
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', sender);
+            messageElement.innerHTML = `<p>${message}</p>`;
+            chatBox.appendChild(messageElement);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        document.getElementById('user-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>
