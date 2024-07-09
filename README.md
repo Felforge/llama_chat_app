@@ -14,7 +14,7 @@ This program requires *flask* and *llama-cpp-python*. Pip will be required to in
 
 This chatbot can be fully conifgured using the *config.json* file. See below for an explanation of all the variables that can be adjusted.
 
-## Adjustable Variables
+### Adjustable Variables
 
 * **model_id:**
   * Name of model file being used, see **Model Installation** for details.
