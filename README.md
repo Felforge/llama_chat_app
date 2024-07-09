@@ -18,7 +18,7 @@ This chatbot can be fully conifgured using the *config.json* file. See below for
 
 **model_id:** Name of model file being used, see **Model Installation** for details.\
 **n_gpu_layers:**  Number of layers of the model being offloaded to the GPU.\
-**n_ctx:** Maximum number of tokens that the model can account for when processing a response.
+**n_ctx:** Maximum number of tokens that the model can account for when processing a response.\
 **chat_template:** Template dictating how the chat bot will talk. **A bad chat template can mess up the chtabot completely.**\
-**max_tokens:** Max tokens to be used when generating response. Leave at `null` for no cap. **Setting a value for `max tokens` can cause the bot to cut off.**\
+**max_tokens:** Max tokens to be used when generating response. Leave at `null` for no cap. **Setting a value for this that is too low can cause the bot to cut off.**\
 **stop_conditions:** String conditions that cause the bot to stop it's message. **The bot will still stop if it has nothing else to say.**
