@@ -26,7 +26,8 @@ This chatbot can be fully conifgured using the *config.json* file. See below for
   * Template dictating how the chat bot will talk.
   * ***A bad chat template can mess up the chtabot completely.***
 * **max_tokens:**
-  * Max tokens to be used when generating response. Leave at `null` for no cap.
+  * Max tokens to be used when generating response.
+  * Leave at `null` for no cap.
   * ***Setting a value for this that is too low can cause the bot to cut off.***
 * **stop_conditions:**
   * String conditions that cause the bot to stop it's message.
