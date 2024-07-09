@@ -1,0 +1,12 @@
+{
+    "llm_config" : {
+        "model_id" : "Meta-Llama-3-8B-Instruct-Q6_K.gguf",
+        "n_gpu_layers" : 30,
+        "n_ctx" : 2048
+    },
+    "chat_config" : {
+        "chat_template" : "You are are a helpful Assistant, and you only response to the \"Assistant\" remember, maintain a natural tone. Be precise, concise, and casual. Keep it short.",
+        "max_tokens" : null,
+        "stop_conditions" : ["Q:"]
+    }
+}

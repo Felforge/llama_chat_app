@@ -1,15 +1,24 @@
-""" Module provides a way to process AI models in the GGUF format """
+""" 
+JSON Import used to process config file 
+llama_cpp used to use AI model
+"""
+import json
 from llama_cpp import Llama
 
-DEFAULT_TEMPLATE = "You are are a helpful Assistant, and you only response to the \"Assistant\" remember, maintain a natural tone. Be precise, concise, and casual. Keep it short."
+f = open("config.json", encoding="utf-8")
+config = json.load(f)
+llm_config = config["llm_config"]
+chat_config = config["chat_config"]
 
-def create_llm(model_path="Meta-Llama-3-8B-Instruct-Q6_K.gguf", n_gpu_layers=30, n_ctx=2048):
+def create_llm(model_path=llm_config["model_id"],
+            n_gpu_layers=llm_config["n_gpu_layers"], n_ctx=llm_config["n_ctx"]):
     """Creates and returns LLM.
     
     Args:
-        model_path (str, optional): Path to model to be used as a GGUF file. Defaults to "Meta-Llama-3-8B-Instruct-Q6_K.gguf".
-        n_gpu_layers (int, optional): How many layers of the model are offloaded to the GPU. Defaults to 30.
-        n_ctx (int, optional): Maximum number of tokens that the model can account for when processing a response. Defaults to 2048.
+        model_path (str): Path to model to be used as a GGUF file.
+        n_gpu_layers (int): How many layers of the model are offloaded to the GPU.
+        n_ctx (int): Maximum number of tokens that the model can account for when 
+            processing a response.
 
     Returns:
         LLama Function: Usable LLM
@@ -18,19 +27,19 @@ def create_llm(model_path="Meta-Llama-3-8B-Instruct-Q6_K.gguf", n_gpu_layers=30,
       model_path=model_path,
       n_gpu_layers=n_gpu_layers,
       n_ctx=n_ctx,
-      prompt="You are are a helpful Assistant, and you only response to the \"Assistant\" remember, maintain a natural tone. Be precise, concise, and casual. Keep it short.",
     )
     return llm
 
-def generate_output(question, llm, chat_template=DEFAULT_TEMPLATE, max_tokens=None, stop_conditions=["Q:"]):
+def generate_output(question, llm, chat_template=chat_config["chat_template"],
+            max_tokens=chat_config["max_tokens"], stop_conditions=chat_config["stop_conditions"]):
     """Returns a response to the inputted question using the inputted LLM.
 
     Args:
         question (string): Qestion to be asked to the model.
         llm: Model to be used when generating response.
-        max_tokens (int, optional): Max tokens to be used when generating response. Defaults to None.
-        stop_conditions (list, optional): Condition for response to stop generating. Defaults to ["Q:"].
-        include_question (bool, optional): If to include question in returned response. Defaults to False.
+        max_tokens (int): Max tokens to be used when generating response.
+        stop_conditions (list): Condition for response to stop generating.
+        include_question (bool): If to include question in returned response.
 
     Returns:
         string: Response to inputted question.
